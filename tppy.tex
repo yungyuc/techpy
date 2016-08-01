@@ -1,0 +1,149 @@
+%%
+%% Copyright (c) 2016 Yung-Yu Chen <yyc@solvcon.net>
+%%
+%% All rights reserved.
+%%
+
+\documentclass[a4paper,12pt]{book}
+%\documentclass[a4paper,12pt]{article}
+%\documentclass[a4paper,12pt,dvips]{article}
+
+\usepackage[textwidth=6.5in,textheight=9in]{geometry}
+
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{LiHei Pro}
+%\setromanfont{LiHei Pro} % 儷黑Pro
+%\setmonofont{Courier New} % 等寬字型
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+\usepackage[nopostdot]{glossaries}
+
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[monochrome]{color}
+\usepackage{graphicx}     % From LaTeX distribution
+%\usepackage{subfigure}    % From CTAN/macros/latex/contrib/supported/subfigure
+\usepackage{pst-all}      % From PSTricks
+\usepackage{pst-poly}     % From pstricks/contrib/pst-poly
+\usepackage{multido}      % From PSTricks
+\usepackage[center,footnotesize]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{xCJKnumb}
+\titleformat{\chapter}{\centering\Huge\bfseries}{第\,\thechapter\,章}{1em} {}
+%\titleformat{\chapter}{\centering\Huge\bfseries}{第\,\xCJKnumber{\thechapter}\,章}{1em} {}
+
+\usepackage{etoolbox}
+\makeatletter
+%\patchcmd{\chapter}{}{}{}{}
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+
+\graphicspath{{eps/}}
+
+\renewcommand{\contentsname}{目錄}
+\renewcommand{\listfigurename}{圖目錄}
+\newcommand{\LOFname}{圖目錄}
+\newcommand{\LOTname}{表目錄}
+\renewcommand{\listtablename}{表目錄}
+\renewcommand{\chaptername}{章}
+\renewcommand{\appendixname}{附錄}
+\newcommand{\appendices}{附錄}
+\newcommand{\pagename}{頁}
+\renewcommand{\glossaryname}{詞彙表}
+
+\begin{document}
+
+\title{Python 計算實務}
+\author{Yung-Yu Chen}
+\date{2016.8.1}
+
+\maketitle
+
+\tableofcontents
+%\listoffigures
+
+\hspace{.5cm}
+
+\frontmatter
+
+\chapter*{前言}
+\addcontentsline{toc}{chapter}{前言}
+
+用 Python 作應用計算。
+
+\mainmatter
+
+\part{執行環境}
+
+\chapter{Anaconda}
+
+安裝 Anaconda 與命令列執行模式。
+
+\chapter{IPython 互動模式}
+
+\chapter{Jupyter Notebook}
+
+\part{資料}
+
+\chapter{數值}
+
+\chapter{字串}
+
+字串與位元組 (bytes)。
+
+\chapter{數組}
+
+\chapter{列表}
+
+\chapter{字典}
+
+\part{程式結構}
+
+\chapter{流程控制}
+
+\chapter{函式}
+
+\chapter{模組}
+
+匯入。
+
+\chapter{類別}
+
+初始化。
+
+\chapter{套件}
+
+相對匯入。
+
+避免全域變數。
+
+\chapter{NumPy 陣列}
+
+\part{數值計算}
+
+\chapter{陣列檔案處理}
+
+\chapter{字串剖析載入}
+
+\chapter{折線圖}
+
+\chapter{長條圖}
+
+\part{網路通訊}
+
+\chapter{載入網路資料}
+
+JSON API。
+
+\backmatter
+
+\end{document}
+
+% vim: set nobomb ff=unix fenc=utf8:

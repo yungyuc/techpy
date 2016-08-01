@@ -1,0 +1,10 @@
+eps/
+handover/
+*.toc
+*.glsdefs
+*.aux
+*.log
+*.out
+*.dvi
+*.ps
+*.pdf
