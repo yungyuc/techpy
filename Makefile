@@ -2,7 +2,7 @@ SHELL := bash
 
 # Outside control.
 NUM ?= 3 # For LaTeX to correctly cross-reference.  To save time, use 1.
-VERBOSE ?= 0
+VERBOSE ?= 1
 
 ifeq ($(VERBOSE),0)
 	CMDLOG_REDIRECT := > /dev/null
