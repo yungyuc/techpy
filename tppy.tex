@@ -9,6 +9,8 @@
 %\documentclass[a4paper,12pt,dvips]{article}
 
 \usepackage[textwidth=6.5in,textheight=9in]{geometry}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage[monochrome]{color}
 
 \usepackage{fontspec}
 \usepackage{xeCJK}
@@ -22,14 +24,16 @@
 
 \usepackage[nopostdot]{glossaries}
 
-\usepackage[colorlinks=true]{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
+
 \usepackage{amsthm}
-\usepackage[monochrome]{color}
+\theoremstyle{definition}
+\newtheorem{example}{範例}[chapter]
 
 \usepackage{graphicx}     % From LaTeX distribution
 \graphicspath{{eps/}}
+
 \usepackage[center,footnotesize]{caption}
 \usepackage[subrefformat=parens]{subcaption}
 %\usepackage{subfigure}    % From CTAN/macros/latex/contrib/supported/subfigure
@@ -128,11 +132,19 @@ C++ 的執行效率雖然極好，但是非常複雜難學，很難用來提供�
 
 \mainmatter
 
-\part{資料}
+\part{開始使用 Python}
 
 \chapter{執行環境}
 
-說明 Anaconda 的安裝方式，以及命令列與 Jupyter Notebook 的執行。
+Anaconda Python 3 安裝步驟。
+
+\begin{example}
+使用命令列輸出 Hello World
+\end{example}
+
+\begin{example}
+在 Jupyter Notebook 裡面輸出 Hello World Wide Web
+\end{example}
 
 \chapter{字串}
 
@@ -140,15 +152,37 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 但萬國碼字串並不是最基礎的字串表示方式。
 為了與低階的程式相容 (例如 C)，Python 另外提供一種位元組 (bytes) 容器。
 
+\begin{example}
+計算字串的長度
+\end{example}
+
+\begin{example}
+計算字元出現的次數
+\end{example}
+
 \chapter{整數與布林運算}
 
-四則運算。
-
 布林代數與位元運算。
+
+\begin{example}
+位元平移
+\end{example}
+
+\begin{example}
+實作真值表
+\end{example}
 
 \chapter{實數運算}
 
 四則運算。包含整數與實數的混合運算。
+
+\begin{example}
+實作雙元運算子計算機
+\end{example}
+
+\begin{example}
+真實除法與整數除法不一樣
+\end{example}
 
 大整數。
 
@@ -192,21 +226,23 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 
 初始化。
 
-\part{數值計算}
-
-\chapter{NumPy 陣列}
-
-\chapter{陣列檔案處理}
-
-\chapter{折線圖}
-
-\chapter{長條圖}
-
-\part{網路通訊}
+\part{資料處理}
 
 \chapter{載入網路資料}
 
 JSON API。
+
+\part{數值計算}
+
+\chapter{NumPy 陣列}
+
+檔案處理。
+
+\chapter{求解線性系統}
+
+\chapter{影像處理}
+
+\chapter{訊號分析}
 
 \backmatter
 
