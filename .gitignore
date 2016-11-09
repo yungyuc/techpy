@@ -3,6 +3,8 @@ handover/
 *.toc
 *.glsdefs
 *.aux
+*.bbl
+*.blg
 *.log
 *.out
 *.dvi
