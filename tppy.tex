@@ -14,6 +14,8 @@
 
 \usepackage{fontspec}
 \usepackage{xeCJK}
+
+\setmainfont{Calibri}
 \setCJKmainfont{Noto Sans CJK TC}
 %\setCJKmainfont{Microsoft JhengHei}
 %\setCJKmainfont{LiHei Pro}
@@ -85,7 +87,7 @@
 
 \title{Python 計算實務}
 \author{Yung-Yu Chen}
-\date{2016.8.1}
+\date{2016.12.6}
 
 \maketitle
 
@@ -102,24 +104,22 @@
 本書是為了沒有學習過任何程式語言，尤其是非資訊科系的大學部同學，
 所提供的 Python 入門教材。
 
-Python 是一個簡潔、自然的語言，得到程式員長期的喜愛。
+Python 是一個簡潔、自然的語言，長期得到程式員的喜愛。
 近十年來，Python 都是 TIOBE 社群指標\cite{tiobe_index}中的前十名，
 並兩度入選年度程式語言 ("Programming Language of the Year")。
 IEEE 最近公布了一項調查\cite{ieee_pl_2016}，
 其中 Python 是第三受歡迎的程式語言，
-僅次於 C 和 Java，並且是最受歡迎的動態型別程式語言
-(簡稱動態語言，dynamic language)。
+僅次於 C 和 Java，並且是最受歡迎的動態語言 (dynamic language)。
 
-在動態語言中，Python 簡潔的特性讓它特別易於學習。
-人類使用程式語言，是為了驅使電腦執行作業。
-但實際在開發軟體時，花在閱讀程式碼的時間，比寫出程式碼的時間多了很多。
-Python 語言在設計時就考慮了這一點，使它容易被閱讀，進而也容易被撰寫。
+程式語言為了驅使電腦而存在。
+但實際在開發軟體時，閱讀程式碼的時間遠多於寫出程式碼的時間。
+考慮到這一點，Python 被設計成容易閱讀的程式語言。
 用 C 或是 C++ 要花一個小時寫的程式，使用 Python，常常只需要五分鐘。
 
-Python 的簡潔也讓用它寫的程式容易被維護。
-許多人不了解軟體開發，以為程式寫出來以後就不需要改了。
-這完全錯誤。即使開發完成的系統，已經不需要增加新的功能，
-還是必須時常修補。
+Python 的可讀性使 Python 程式容易被維護。
+程式寫出來以後仍然需要時常維護修改。
+維護時不會增加新功能，但要閱讀程式，並修改那些一開始寫得不夠完美的部分。
+沒有人能一次就把程式寫到盡善盡美。如同作家無時無刻都在修改文稿一樣。
 如果程式寫得不容易讀懂，時間一久，連原本的開發者也會難以修改。
 
 因為 Python 易學、易維護，許多複雜的計算系統都選擇使用 Python，
@@ -127,26 +127,59 @@ Python 的簡潔也讓用它寫的程式容易被維護。
 這些計算系統，為了執行效率，往往選擇使用 C++ 開發。
 C++ 的執行效率雖然極好，但是非常複雜難學，很難用來提供高階的 API。
 所以許多這些系統會提供 Python 介面，讓使用者寫程式操作。
-因為這樣的應用很常見，甚至出現了一套名為 Boost.Python 的程式庫，
-專門協助 C++ 程式建立 Python 介面。
+因為這樣的應用很常見，也有許多程式庫專門協助 C++ 程式建立 Python 介面。
 
 \mainmatter
 
-\part{開始使用 Python}
+\chapter{安裝執行環境}
 
-\chapter{執行環境}
+本書使用 Ubuntu Linux 作為執行平台。
+使用 Apple OSX 的讀者可以用類似的方式執行本書中的範例程式。
+使用 Windows 的讀者需要在虛擬機器中安裝 Ubuntu Linux。
 
-Anaconda Python 3 安裝步驟。
+本書針對 Python 3，而非 Python 2。
+
+\section{Ubuntu}
+
+\section{VirtualBox}
+
+\section{Anaconda}
 
 \begin{example}
 使用命令列輸出 Hello World
 \end{example}
 
+\chapter{命令列環境}
+
+\chapter{編輯器}
+
+\chapter{數值和字串、表達式和陳述式}
+
+\section{整數與布林運算}
+
+布林代數與位元運算。
+
 \begin{example}
-在 Jupyter Notebook 裡面輸出 Hello World Wide Web
+位元平移
 \end{example}
 
-\chapter{字串}
+\begin{example}
+實作真值表
+\end{example}
+
+\section{實數運算}
+
+四則運算。包含整數與實數的混合運算。
+
+\begin{example}
+實作雙元運算子計算機
+\end{example}
+
+\begin{example}
+真實除法與整數除法不一樣
+\end{example}
+
+\section{字串}
 
 Python 使用萬國碼 (Unicode) 字串 (string)。
 但萬國碼字串並不是最基礎的字串表示方式。
@@ -160,89 +193,61 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 計算字元出現的次數
 \end{example}
 
-\chapter{整數與布林運算}
+\chapter{資料結構、演算法、容器}
 
-布林代數與位元運算。
-
-\begin{example}
-位元平移
-\end{example}
-
-\begin{example}
-實作真值表
-\end{example}
-
-\chapter{實數運算}
-
-四則運算。包含整數與實數的混合運算。
-
-\begin{example}
-實作雙元運算子計算機
-\end{example}
-
-\begin{example}
-真實除法與整數除法不一樣
-\end{example}
-
-大整數。
-
-有理數。
-
-\chapter{序列}
+\section{序列}
 
 \section{數組}
 
 \section{列表}
 
-\chapter{字典}
+\section{字典}
 
-\chapter{集合}
+\section{集合}
 
-\part{程式結構}
-
-\chapter{流程控制}
+\chapter{迴圈與條件判斷}
 
 縮排。
 
-\section{條件判斷}
-
-\section{迴圈}
-
-\chapter{函式}
+\chapter{函式、類別、物件}
 
 \section{遞迴}
 
-\chapter{模組}
+\chapter{例外處理}
+
+\chapter{迭代器與產生器}
+
+\chapter{檔案與輸出入}
+
+\chapter{測試與除錯}
+
+\chapter{佈署、模組、套件}
 
 匯入。
-
-\chapter{套件}
 
 相對匯入。
 
 避免全域變數。
 
-\chapter{類別}
+\chapter{詮釋編程}
 
-初始化。
+\chapter{並發計算}
 
-\part{資料處理}
+\chapter{進階使用}
 
-\chapter{載入網路資料}
+\begin{itemize}
 
-JSON API。
+\item 載入網路資料；JSON。
 
-\part{數值計算}
+\item NumPy 多維連續陣列。
 
-\chapter{NumPy 陣列}
+\item 線性系統。
 
-檔案處理。
+\item 影像處理。
 
-\chapter{求解線性系統}
+\item 訊號分析。
 
-\chapter{影像處理}
-
-\chapter{訊號分析}
+\end{itemize}
 
 \backmatter
 
