@@ -15,8 +15,10 @@
 \usepackage{fontspec}
 \usepackage{xeCJK}
 
-\setmainfont{Calibri}
-\setCJKmainfont{Noto Sans CJK TC}
+%\setmainfont{Calibri}
+\setmainfont{Times New Roman}
+\setCJKmainfont{Songti TC}
+%\setCJKmainfont{Noto Sans CJK TC}
 %\setCJKmainfont{Microsoft JhengHei}
 %\setCJKmainfont{LiHei Pro}
 %\setromanfont{LiHei Pro} % 儷黑Pro
@@ -83,6 +85,12 @@
 \newcommand{\pagename}{頁}
 \renewcommand{\glossaryname}{詞彙表}
 
+\makeatletter
+\renewcommand\p@chapter{\xCJKnumber{\arabic{chapter}}\expandafter\@gobble}
+\makeatother
+
+\usepackage{cleveref}
+
 \begin{document}
 
 \title{Python 計算實務}
@@ -98,18 +106,87 @@
 
 \frontmatter
 
-\chapter*{前言}
-\addcontentsline{toc}{chapter}{前言}
+\chapter{前言}
+%\addcontentsline{toc}{chapter}{前言}
 
-本書是為了沒有學習過任何程式語言，尤其是非資訊科系的大學部同學，
-所提供的 Python 入門教材。
+%
+% Python 簡介
+%
 
-Python 是一個簡潔、自然的語言，長期得到程式員的喜愛。
-近十年來，Python 都是 TIOBE 社群指標\cite{tiobe_index}中的前十名，
-並兩度入選年度程式語言 ("Programming Language of the Year")。
-IEEE 最近公布了一項調查\cite{ieee_pl_2016}，
-其中 Python 是第三受歡迎的程式語言，
-僅次於 C 和 Java，並且是最受歡迎的動態語言 (dynamic language)。
+Python 程式語言發展至今已逾 25 年。
+1989 年 12 月，
+Guido van Rossum 在荷蘭的 Centrum Wiskunde \& Informatica (CWI) 開始了
+Python 的開發工作，並在 1990 年發行 CWI 內部版本。
+它的第一個公開版本是 0.9.0，
+發行於 1991 年 2 月 20 日\cite{rossum_brief_2009}。
+相較於 1996 年發行 1.0 版的 Java，Python 的歷史還更久一點。
+
+Python 簡潔、自然、功能繁多，是理想的入門教學語言。
+Python 是動態型別程式語言
+(dynamic-typing programming language；簡稱動態語言；dynamic language)。
+當我們使用動態語言撰寫程式的時候，
+首先會注意到的就是它不必宣告 (declare)、直接使用變數 (variable) 的特性。
+在電腦的世界裡，變數是用來識別資料的方式。
+每項資料都被賦予型態 (type)，宣告即是在撰寫程式的當下指定變數型態的方法。
+電腦必須知道變數的型態，才能導向至正確的邏輯，處理資料。
+在動態語言中，變數的型態會在程式執行的時候自動被決定。
+在那之前 (例如撰寫程式的當下)，變數的型態並未確定，也就不需要宣告了。
+
+每一種程式語言都需要編譯器 (compiler)，
+把人類能讀懂的原始碼 (source code)
+編譯 (compile) 成電腦能執行的機器碼 (machine code)。
+但動態語言一般採取另一種稱作直譯器 (interpreter) 的實作方法。
+直譯器在讀取原始碼的同時，直接把原始碼轉換成機器碼，讓電腦執行。
+編譯與直譯這兩種模式最大的差別，是編譯器能一次掃瞄整份原始碼，
+全面性地最佳化 (optimize) 之後再生成機器碼。
+直譯器可見的原始碼有限，只能作局部的最佳化，因此執行效率很差。
+
+因為編譯器協助動態語言的部分有限，傳統上它不是學校課程所選擇的程式語言。
+因此，Python 過去不像 C、C++、Java 等語言那麼出名。
+近年來，由於編程的應用與普及，Python 開始在學校為人所知。
+
+本書透過演繹和範例展示 Python 的功能，
+使讀著無論採取課堂講授或自主學習的方式，
+都能確實地習得基本 Python 編程的能力。
+
+目前 Python 發展的重心是 Python 3。Python 3 發行於 2008 年。
+為了擺脫過去的設計缺陷，Python 3 具有不相容於 Python 2 的特性。
+常用的 Python 程式庫都已經移植到了 Python 3，
+是故一般的使用者可以放心使用 Python 3 的好處。
+本書也針對 Python 3 撰寫。
+
+%
+% 章節編排
+%
+
+讀者不需要程式語言的背景，也能使用本書學會 Python。
+從一開始的第\ref{c:runtime}、\ref{c:editor}章，帶領讀者建立執行與開發環境。
+第\ref{c:arithmic}、\ref{c:container}、\ref{c:control}、\ref{c:structure}、%
+\ref{c:exception}、\ref{c:iterator}、\ref{c:inout}章%
+實際說明如何使用 Python 執行計算。
+第\ref{c:deployment}、\ref{c:debug}、\ref{c:version}章介紹必備的軟體工程技能。
+最後在第\ref{c:regexp}、\ref{c:meta}、\ref{c:concurrency}、%
+\ref{c:extension}、\ref{c:beyond}章，介紹進階的 Python 功能。
+
+%
+% 學習目的
+%
+
+電腦 (computer) 豐富人類的生活，
+使我們無法拒絕在任何一個可能使用電腦協助我們的場合，利用電腦幫助我們。
+
+計算思維 (computational thinking)。
+
+本書是為了沒有學習過任何程式語言，
+尤其是非資訊科系的大學部同學或中學生所提供的 Python 入門教材。
+
+Python 是一個簡潔自然的語言，長期得到程式員的喜愛。
+近十年來，Python 都是
+TIOBE 社群指標\footnote{\url{http://www.tiobe.com/tiobe-index/}}中的前十名，
+並兩度入選年度程式語言 (``Programming Language of the Year'')。
+Institute of Electrical and Electronics Engineers (IEEE) 發現
+Python 受程式員歡迎的程度僅次於 C 和 Java，
+是最受歡迎的動態語言 (dynamic language) \cite{cass_interactive:_2016}。
 
 程式語言為了驅使電腦而存在。
 但實際在開發軟體時，閱讀程式碼的時間遠多於寫出程式碼的時間。
@@ -131,13 +208,16 @@ C++ 的執行效率雖然極好，但是非常複雜難學，很難用來提供�
 
 \mainmatter
 
-\chapter{安裝執行環境}
+\part{認識環境}
+%
+\label{p:environment}
 
-本書使用 Ubuntu Linux 作為執行平台。
-使用 Apple OSX 的讀者可以用類似的方式執行本書中的範例程式。
-使用 Windows 的讀者需要在虛擬機器中安裝 Ubuntu Linux。
+\chapter{執行環境}
+%
+\label{c:runtime}
 
-本書針對 Python 3，而非 Python 2。
+本書的範例程式是在 Ubuntu Linux 16.04 LTS 或 Mac OSX 10.12 下開發測試。
+讀者最好在相同的環境下執行。
 
 \section{Ubuntu}
 
@@ -149,11 +229,23 @@ C++ 的執行效率雖然極好，但是非常複雜難學，很難用來提供�
 使用命令列輸出 Hello World
 \end{example}
 
-\chapter{命令列環境}
+\section{命令列環境}
 
-\chapter{編輯器}
+\chapter{文字編輯器}
+%
+\label{c:editor}
+
+\section{VIM}
+
+\section{Jupyter Notebook}
+
+\part{核心功能}
+%
+\label{p:core}
 
 \chapter{數值和字串、表達式和陳述式}
+%
+\label{c:arithmic}
 
 \section{整數與布林運算}
 
@@ -193,7 +285,9 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 計算字元出現的次數
 \end{example}
 
-\chapter{資料結構、演算法、容器}
+\chapter{容器、資料結構、演算法}
+%
+\label{c:container}
 
 \section{序列}
 
@@ -206,22 +300,36 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 \section{集合}
 
 \chapter{迴圈與條件判斷}
+%
+\label{c:control}
 
 縮排。
 
 \chapter{函式、類別、物件}
+%
+\label{c:structure}
 
 \section{遞迴}
 
 \chapter{例外處理}
+%
+\label{c:exception}
 
 \chapter{迭代器與產生器}
+%
+\label{c:iterator}
 
 \chapter{檔案與輸出入}
+%
+\label{c:inout}
 
-\chapter{測試與除錯}
+\part{軟體工程}
+%
+\label{p:software}
 
 \chapter{佈署、模組、套件}
+%
+\label{c:deployment}
 
 匯入。
 
@@ -229,23 +337,47 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 
 避免全域變數。
 
+\chapter{測試與除錯}
+%
+\label{c:debug}
+
+\chapter{版本控制}
+%
+\label{c:version}
+
+\part{進階功能}
+%
+\label{p:advance}
+
+\chapter{常規表示式}
+%
+\label{c:regexp}
+
 \chapter{詮釋編程}
+%
+\label{c:meta}
 
 \chapter{並發計算}
+%
+\label{c:concurrency}
 
-\chapter{進階使用}
+\chapter{延伸模組}
+%
+\label{c:extension}
+
+\chapter{綜合應用}
+%
+\label{c:beyond}
 
 \begin{itemize}
 
-\item 載入網路資料；JSON。
+\item 命令列介面設計。
+
+\item 文字資料處理。載入網路資料；JSON。
 
 \item NumPy 多維連續陣列。
 
 \item 線性系統。
-
-\item 影像處理。
-
-\item 訊號分析。
 
 \end{itemize}
 

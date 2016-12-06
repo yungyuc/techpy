@@ -50,20 +50,25 @@ $(MAIN_FN).pdf: $(MAIN_FN).tex bibliography.bib $(ALL_EPS) Makefile
 
 .PRECIOUS: %.pdf
 
-# Handy tools.
-.PHONY: ho handover clean fun
-
+.PHONY: ho
 ho: handover
 
+.PHONY: handover
 handover: $(MAIN_FN).pdf
 	@echo "Generating today's PDF: $(HANDOVER_FN)"
 	mkdir -p $(HANDOVER_DIR)
 	cp -f $< $(HANDOVER_FN)
 
+.PHONY: clean
 clean:
 	rm -f $(EPS_DIR)/* *.cmd.log \
 		$(foreach ext,$(LATEX_DERIVED_EXT),$(MAIN_FN).$(ext))
 
+.PHONY: pdfview
+pdfview:
+	$(PDFVIEW) $(MAIN_FN).pdf
+
+.PHONY: fun
 fun:
 	$(GVIM) Makefile $(ALL_SRC) -p -c "set lines=999"
 	$(PDFVIEW) $(MAIN_FN).pdf
