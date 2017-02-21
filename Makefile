@@ -44,7 +44,7 @@ $(EPS_DIR)/%.eps: $(SCHEMATIC_DIR)/%.tex Makefile pstake.py
 $(MAIN_FN).pdf: $(MAIN_FN).tex bibliography.bib $(ALL_EPS) Makefile
 	@echo "Having EPS files: $(ALL_EPS)"
 	num=1 ; while [[ $$num -le $(NUM) ]] ; do \
-		xelatex $< 2>&1 | tee $@.$$num.cmd.log $(CMDLOG_REDIRECT) ; \
+		xelatex -shell-escape $< 2>&1 | tee $@.$$num.cmd.log $(CMDLOG_REDIRECT) ; \
 		bibtex $(basename $<) 2>&1 | tee $@.$$num.bibtex.log $(CMDLOG_REDIRECT) ; \
 		(( num = num + 1 )) ; \
 	done

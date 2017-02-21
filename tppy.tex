@@ -45,6 +45,8 @@
 \usepackage{pst-poly}     % From pstricks/contrib/pst-poly
 \usepackage{multido}      % From PSTricks
 
+\usepackage{minted}
+
 \usepackage{xCJKnumb}
 \usepackage{titlesec}
 \usepackage{titletoc}
@@ -237,16 +239,94 @@ Python 的開發工作，並在 1990 年發行 CWI 內部版本。
 Python 累積了大量的程式庫 (library) 與廣大的使用者社群，
 成為世界上應用最多、最受歡迎的程式語言之一。
 
-本書的範例程式均在 Ubuntu Linux 16.04 LTS 或 macOS 10.12 下開發測試。
+本書的範例程式均在 Ubuntu Linux 16.04 LTS (Xenial Xerus)\footnote{\url{https://www.ubuntu.com/}.}
+下開發測試。
 讀者應在相同的環境下執行。
 為了方便讀者學習，本章將講述如何在 Windows、Linux、macOS 等各種系統下，
 設定可用於本書的執行環境。
 
-\section{Ubuntu}
+\section{使用 Anaconda}
 
-安裝 Anaconda，避免使用系統提供的 Python。
+由於 Python 是一套開放原始碼 (開源；open source) 的軟體，
+它在同樣是開源的 Ubuntu Linux 作業系統中擁有很好的支援。
+本書選擇了目前最新的 Long Term Support (LTS) Ubuntu 版本，
+16.04，作為執行平台。
+在相同的作業系統之下執行本書中的範例程式，
+初學 Python 的讀者較不容易遇見軟體版本衝突而引發的程式錯誤。
+
+採用 Ubuntu Linux 的另一個原因，
+是它有較好的命令行介面 (command-line interface, CLI) 支援。
+顧名思義，命令行介面是由使用者輸入一個指令，而電腦回應一個動作的介面。
+雖然命令行介面在互動性上大大的不如圖形化介面 (graphical user interface, GUI)，
+它的操作過程卻很容易複製。
+使用命令行介面，讀者可以輕易地依照本書的說明，對電腦下達相同的指令。
+
+為了使用最新的 Python，我們要安裝
+Anaconda Distribution (\url{https://www.continuum.io/anaconda-overview})。
+Anaconda 是 Continuum Analytics\footnote{\url{https://www.continuum.io}.}
+公司所提供免費開源的跨平台 Python 執行環境。
+Anaconda 內含了許多 Python 及與 Python 有關的軟體套件。
+透過 Anaconda，除了 Linux 之外，也能在 Windows 和 macOS 上安裝相同的軟體套件。
+
+除了版本和跨平台以外，Anaconda 還有另外兩大優點：
+%
+\begin{enumerate}
+%
+\item 可以直接安裝在使用者目錄內，不需要 root 權限。
+root 是 Linux 具有最高權限的系統管理帳號。
+%
+\item 在單一的 Anaconda 安裝內，可以建立無數個獨立的執行環境。
+在各個獨立的執行環境內，可以安裝不同的軟體套件。
+在開發或測試程式時，這是很方便的功能。
+%
+\end{enumerate}
+
+依據 \url{https://www.continuum.io/downloads} 的說明，
+下載後即可安裝 Anaconda。
+或者你也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
+輸入以下的指令，即可安裝 Anaconda (此處假設你使用的是一般 x86\_64 架構的 PC)：
+
+\begin{minted}{bash}
+$ mkdir -p ~/tmp
+$ curl -sSL -o ~/tmp/anaconda.sh \
+https://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
+$ bash ~/tmp/anaconda.sh -b -p $HOME/anaconda
+\end{minted}
+%stopzone
+
+我們把 Anaconda 安裝到 \verb+~/anaconda+ 目錄下。
+要使用所安裝的 Python，需要調整執行檔搜尋路徑。
+請在 \verb+~/.bashrc+ 的尾巴加上一行：
+
+\begin{minted}{bash}
+export PATH=$HOME/anaconda/bin:$PATH
+\end{minted}
+%stopzone
+
+檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了。
+如果不想重啟終端機，可用以下的指令載入新的設定：
+
+\begin{minted}{bash}
+$ source ~/.bashrc
+$ hash -r
+\end{minted}
+%stopzone
+
+測試是否設定正確：
+
+\begin{minted}{bash}
+$ which python3
+/home/ubuntu/anaconda/bin/python3
+\end{minted}
+%stopzone
+
+因為系統中可能有其它的 Python 2 安裝，
+所以我們在執行 Python 直譯器的時候，儘可能用 \verb+python3+ 指明使用 Python 3，
+以免錯誤地執行了 Python 2。
 
 \section{VirtualBox 虛擬機器}
+%
+\label{c:runtime:vbox}
 
 \section{使用既有套件}
 
@@ -256,7 +336,7 @@ Anaconda 與 PIP。
 使用命令列輸出 Hello World
 \end{example}
 
-\section{命令列環境}
+\section{命令列互動模式}
 
 \section{習題}
 
@@ -275,8 +355,6 @@ Anaconda 與 PIP。
 \section{VIM}
 
 \section{Jupyter Notebook}
-
-\section{互動模式}
 
 \section{單步追蹤}
 
