@@ -93,11 +93,24 @@
 
 \usepackage{cleveref}
 
+\newenvironment{notice}
+{
+\begin{center}
+\begin{minipage}[t]{0.9\textwidth}
+\noindent 注意
+\vskip 1em
+
+}
+{
+\end{minipage}
+\end{center}
+}
+
 \begin{document}
 
 \title{Python 計算實務}
 \author{Yung-Yu Chen}
-\date{2017.2.21}
+\date{2017.2.28}
 
 \maketitle
 
@@ -246,6 +259,8 @@ Python 累積了大量的程式庫 (library) 與廣大的使用者社群，
 設定可用於本書的執行環境。
 
 \section{使用 Anaconda}
+%
+\label{c:runtime:anaconda}
 
 由於 Python 是一套開放原始碼 (開源；open source) 的軟體，
 它在同樣是開源的 Ubuntu Linux 作業系統中擁有很好的支援。
@@ -282,47 +297,56 @@ root 是 Linux 具有最高權限的系統管理帳號。
 \end{enumerate}
 
 依據 \url{https://www.continuum.io/downloads} 的說明，
-下載後即可安裝 Anaconda。
-或者你也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
-輸入以下的指令，即可安裝 Anaconda (此處假設你使用的是一般 x86\_64 架構的 PC)：
+即可下載 Anaconda 並安裝。
+也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
+輸入以下的指令安裝 (此處假設你使用的是一般 x86\_64 架構的 PC)：
 
 \begin{minted}{bash}
 $ mkdir -p ~/tmp
-$ curl -sSL -o ~/tmp/anaconda.sh \
-https://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh
+$ curl -SL -o ~/tmp/anaconda.sh \
+https://repo.continuum.io/archive/\
+Anaconda3-4.3.0-Linux-x86_64.sh
 $ bash ~/tmp/anaconda.sh -b -p $HOME/anaconda
 \end{minted}
 %stopzone
 
-我們把 Anaconda 安裝到 \verb+~/anaconda+ 目錄下。
-要使用所安裝的 Python，需要調整執行檔搜尋路徑。
-請在 \verb+~/.bashrc+ 的尾巴加上一行：
+%\begin{center}
+%\begin{minipage}[t]{0.8\textwidth}
+%\noindent 注意 \newline
+%
+%\noindent
+\begin{notice}
+\noindent 值此寫作之時，Anaconda 最新的版本是 4.3。但它版本推進的速度很快。
+若最新的版本已經不是 4.3，請安裝更新版。
+\end{notice}
+%\end{minipage}
+%\end{center}
+
+以上的指令表示我們要把 Anaconda 安裝到 \verb+~/anaconda+ 目錄下。
+在使用所安裝的 Python 之前，需要調整執行檔搜尋路徑。
+請在 \verb+~/.bashrc+ 的檔尾加上一行：
 
 \begin{minted}{bash}
 export PATH=$HOME/anaconda/bin:$PATH
 \end{minted}
 %stopzone
 
-檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了。
-如果不想重啟終端機，可用以下的指令載入新的設定：
-
-\begin{minted}{bash}
-$ source ~/.bashrc
-$ hash -r
-\end{minted}
-%stopzone
-
-測試是否設定正確：
+檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了：
 
 \begin{minted}{bash}
 $ which python3
 /home/ubuntu/anaconda/bin/python3
+$ python3
+Python 3.6.0 |Anaconda 4.3.0 (64-bit)| (default, Dec 23 2016, 12:22:00) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
 \end{minted}
 %stopzone
 
-因為系統中可能有其它的 Python 2 安裝，
-所以我們在執行 Python 直譯器的時候，儘可能用 \verb+python3+ 指明使用 Python 3，
-以免錯誤地執行了 Python 2。
+還記得 Python 有第二與第三版的分別嗎？
+為了避免執行到錯誤的版本，
+本書都使用「\verb+python3+」來明確指明使用第三版的 Python。
 
 \section{VirtualBox 虛擬機器}
 %
