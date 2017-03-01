@@ -1,5 +1,6 @@
+_minted-*/
 eps/
-handover/
+handover
 *.toc
 *.glsdefs
 *.aux

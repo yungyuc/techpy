@@ -45,6 +45,8 @@
 \usepackage{pst-poly}     % From pstricks/contrib/pst-poly
 \usepackage{multido}      % From PSTricks
 
+\usepackage{minted}
+
 \usepackage{xCJKnumb}
 \usepackage{titlesec}
 \usepackage{titletoc}
@@ -91,11 +93,24 @@
 
 \usepackage{cleveref}
 
+\newenvironment{notice}
+{
+\begin{center}
+\begin{minipage}[t]{0.9\textwidth}
+\noindent 注意
+\vskip 1em
+
+}
+{
+\end{minipage}
+\end{center}
+}
+
 \begin{document}
 
 \title{Python 計算實務}
 \author{Yung-Yu Chen}
-\date{2016.12.6}
+\date{2017.2.28}
 
 \maketitle
 
@@ -109,21 +124,250 @@
 \chapter{前言}
 %\addcontentsline{toc}{chapter}{前言}
 
-%
-% Python 簡介
-%
+這是一部為了沒有學習過任何程式語言的讀者、
+非資訊科系的大學部同學或中學生所準備的 Python 入門教材。
 
-Python 程式語言發展至今已逾 25 年。
+撰寫電腦程式指揮電腦，完成大量的資訊處理工作，是當世必備的技能。
+電腦已經成為容易取得的設備，但各人指揮電腦的功夫的差異很大。
+這造成各行各業中，哪怕只是多一點點操作電腦的技術，都成為巨大的生產力優勢。
+寫程式是最有彈性的電腦使用方式。
+學會寫程式，就是用最高效率的方法，掌握了最方便好用的工具。
+
+程式編寫的本質是資訊處理的自動化。
+在數位電腦 (digitial computer) 發明之前，人類依靠肉身處理資訊。
+好比印刷術發明之前，若不依靠抄寫員複製書籍，那就只好以背誦或傳唱傳遞知識。
+資訊處理工作要求大量人腦所不擅長的重複作業，
+而不斷精進的半導體電路，恰恰最擅長重複。
+我們在學習編寫程式時，
+也必然得學會基本的電腦科學和一點數學。
+
+寫程式這種技能不但要求高度的知性 (intellect)，更是一項強調熟習的技藝 (craft)。
+Dijkstra 為了寫下一個簡單迴圈的數學證明，
+耗費了一整頁的篇幅\cite{dahl_structured_1972}。
+實際上在編寫程式的時候，哪裡可能花這麼多力氣處理單單一個迴圈呢。
+學習程式語言，許多的時間應該花在練習正確的程式成語 (idiom) 與其脈絡。
+藉由不斷閱讀好程式的寫法，程式員才能精進編程的能力。
+
+從入門的時候就開始程式寫作的鍛鍊，養成好習慣，
+不但增加學習的效率，也利於有志於專業編程者的長遠發展。
+Python 非常適於向上向下的擴展。
+在 Python 上面建立了良好的基礎之後，
+可以迅速抓住注重細節的 C 與 C++ 的技術重點。
+使用 Python 建造系統的時候，持續磨練技藝，
+不但強化系統，也增進實作能力甚或語言本身。
+
+為了有效地學習基本的 Python 編程，
+希望讀者在閱讀本書的時候，同時打開電腦，實際輸入程式練習。
+本書會交錯摻雜各種例題和講解，以便讀者練習。
+
+本書針對 Python 3 撰寫。
+初學的讀者要注意，Python 3 與舊版的 Python 2 有細微的不同。
+Python 發展至今已歷 25 年，更新無數。
+為了維持舊有程式的執行平台，Python 2 仍在維護中。
+但自 2008 以後，所有的新功能都加在 Python 3，而 Python 2 的版本也停在了 2.7。
+Python 最新的版本是 3.6。本書的所有範例以其為準。
+
+Python 學起來簡單，寫起來也簡單。
+近十年來，Python 都是 TIOBE 社群指標中的前十名，
+並兩度入選年度程式語言
+(``Programming Language of the Year'')\footnote{\url{http://www.tiobe.com/tiobe-index/}}。
+Institute of Electrical and Electronics Engineers (IEEE) 發現
+Python 受程式員歡迎的程度僅次於 C 和 Java，
+是最受歡迎的動態語言 (dynamic language) \cite{cass_interactive:_2016}。
+
+Python 易學易寫的秘密在於它的易讀性 (readability)。
+易讀的特性也讓它成為初學程式設計的最佳語言。
+無論新手熟工，總是讀懂了問題才能設法解決。
+如果連書本裡面的範例程式都讀不懂，如何學習呢。
+這看似淺明的道理是程式設計的精髓。
+Python 的設計者把易讀性放在語言的核心。
+語言的使用者當掌握要義。
+
+為底層的高速 C/C++ 程式庫 (library) 提供應用程式介面 
+(Application Programming Interface, API)，也是 Python 的主要應用之一%
+\footnote{\url{https://www.tensorflow.org/} 為一例。}。
+這些計算系統，往往為了執行效率而選擇使用 C++ 程式語言開發。
+C++ 的執行效率極好但複雜難學，無法提供簡明的高階 API。
+Python 本身是以 C 語言開發，隨附了完善的 C API，
+允許以 C 語言延伸 (extend) Python，
+或在以 C 語言撰寫的系統裡嵌附 (embed) Python。
+對 C++ 而言，除了同樣的 C API 之外，
+也能使用其它程式庫進一步簡化延伸與嵌附的工作。
+
+雖然 Python 已是一個通用程式語言 (generic language)，
+功能極完整，可以執行幾乎任何任務，
+但以 C/C++ 延伸 Python 的能力，仍是資深程式員不可或缺的。
+許多資深的 Python 程式員熟悉 Python 的底層。
+讀到一段 Python 程式時，他們可以概略轉譯出底層的 C 語言實作，
+快速分析程式的效能。
+這種與 C/C++ 相互合作的結構，是 Python 的一大特色。
+在高效能計算 (high-performance computing, HPC) 領域內，
+有「以 Python 寫 C」之說，實不為假。
+這不是指以 Python 產生 C 程式碼再編譯執行，
+而是撰寫原生的 Python 程式碼，
+讓 Python 直譯器最後組合出來的底層呼叫，擁有近於原生 C 程式的速度。
+
+Python 易讀、易寫、易擴充，是最佳入門程式語言，也是專業程式員的最佳工具。
+如此方便的語言工具，更能協助我們應用計算思維 (computational thinking)，
+處理過去單憑人類的肉體無法解決的問題。
+從彈道計算、文書處理、智慧型手機，到自動駕駛汽車，
+電腦的應用大大地增幅了人類的能力。
+我們沒有理由認為電腦的應用會止於我們目前所見。
+我們要為任何一種領域思考，
+是否能從計算 (computation) 的角度重塑工作模式，
+完成過去所想像不到的事情。
+
+希望 Python 成為讀者最有力的計算工具。
+
+\mainmatter
+
+\chapter{執行環境}
+%
+\label{c:runtime}
+
+Python 簡潔、自然、功能繁多，是理想的程式設計教學語言。
+分類上，Python 屬於動態型別程式語言
+(dynamic-typing programming language；簡稱動態語言；dynamic language)，
+原始碼可以直接被執行。
+一般來說，程式語言需要編譯器 (compiler)，
+把人類能讀懂的原始碼 (source code)
+編譯 (compile) 成電腦能執行的機器碼 (machine code)。
+但動態語言一般採取直譯器 (interpreter) 的實作方法。
+直譯器在讀取原始碼的同時，直接把原始碼轉換成機器碼，讓電腦執行。
+這兩種模式最大的差別，是編譯器能一次掃瞄整份原始碼，
+全面性地最佳化 (optimize) 之後再生成機器碼。
+直譯器可見的原始碼有限，只能作局部的最佳化，因此執行效率較差。
+但經過本書的介紹，你會了解為什麼語言本身效率較 C/C++ 差的 Python，
+通常可以實作出更為有用的程式。
+而有時，Python 程式的執行速度還可以超過 C/C++。
+
+Python 程式語言發展至今逾 25 年。
 1989 年 12 月，
 Guido van Rossum 在荷蘭的 Centrum Wiskunde \& Informatica (CWI) 開始了
 Python 的開發工作，並在 1990 年發行 CWI 內部版本。
 它的第一個公開版本是 0.9.0，
 發行於 1991 年 2 月 20 日\cite{rossum_brief_2009}。
 相較於 1996 年發行 1.0 版的 Java，Python 的歷史還更久一點。
+在這一段長時間的發展中，
+Python 累積了大量的程式庫 (library) 與廣大的使用者社群，
+成為世界上應用最多、最受歡迎的程式語言之一。
 
-Python 簡潔、自然、功能繁多，是理想的入門教學語言。
-Python 是動態型別程式語言
-(dynamic-typing programming language；簡稱動態語言；dynamic language)。
+本書的範例程式均在 Ubuntu Linux 16.04 LTS (Xenial Xerus)\footnote{\url{https://www.ubuntu.com/}.}
+下開發測試。
+讀者應在相同的環境下執行。
+為了方便讀者學習，本章將講述如何在 Windows、Linux、macOS 等各種系統下，
+設定可用於本書的執行環境。
+
+\section{使用 Anaconda}
+%
+\label{c:runtime:anaconda}
+
+由於 Python 是一套開放原始碼 (開源；open source) 的軟體，
+它在同樣是開源的 Ubuntu Linux 作業系統中擁有很好的支援。
+本書選擇了目前最新的 Long Term Support (LTS) Ubuntu 版本，
+16.04，作為執行平台。
+在相同的作業系統之下執行本書中的範例程式，
+初學 Python 的讀者較不容易遇見軟體版本衝突而引發的程式錯誤。
+
+採用 Ubuntu Linux 的另一個原因，
+是它有較好的命令行介面 (command-line interface, CLI) 支援。
+顧名思義，命令行介面是由使用者輸入一個指令，而電腦回應一個動作的介面。
+雖然命令行介面在互動性上大大的不如圖形化介面 (graphical user interface, GUI)，
+它的操作過程卻很容易複製。
+使用命令行介面，讀者可以輕易地依照本書的說明，對電腦下達相同的指令。
+
+為了使用最新的 Python，我們要安裝
+Anaconda Distribution (\url{https://www.continuum.io/anaconda-overview})。
+Anaconda 是 Continuum Analytics\footnote{\url{https://www.continuum.io}.}
+公司所提供免費開源的跨平台 Python 執行環境。
+Anaconda 內含了許多 Python 及與 Python 有關的軟體套件。
+透過 Anaconda，除了 Linux 之外，也能在 Windows 和 macOS 上安裝相同的軟體套件。
+
+除了版本和跨平台以外，Anaconda 還有另外兩大優點：
+%
+\begin{enumerate}
+%
+\item 可以直接安裝在使用者目錄內，不需要 root 權限。
+root 是 Linux 具有最高權限的系統管理帳號。
+%
+\item 在單一的 Anaconda 安裝內，可以建立無數個獨立的執行環境。
+在各個獨立的執行環境內，可以安裝不同的軟體套件。
+在開發或測試程式時，這是很方便的功能。
+%
+\end{enumerate}
+
+依據 \url{https://www.continuum.io/downloads} 的說明，
+即可下載 Anaconda 並安裝。
+也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
+輸入以下的指令安裝 (此處假設你使用的是一般 x86\_64 架構的 PC)：
+
+\begin{minted}{bash}
+$ mkdir -p ~/tmp
+$ curl -SL -o ~/tmp/anaconda.sh \
+https://repo.continuum.io/archive/\
+Anaconda3-4.3.0-Linux-x86_64.sh
+$ bash ~/tmp/anaconda.sh -b -p $HOME/anaconda
+\end{minted}
+%stopzone
+
+%\begin{center}
+%\begin{minipage}[t]{0.8\textwidth}
+%\noindent 注意 \newline
+%
+%\noindent
+\begin{notice}
+\noindent 值此寫作之時，Anaconda 最新的版本是 4.3。但它版本推進的速度很快。
+若最新的版本已經不是 4.3，請安裝更新版。
+\end{notice}
+%\end{minipage}
+%\end{center}
+
+以上的指令表示我們要把 Anaconda 安裝到 \verb+~/anaconda+ 目錄下。
+在使用所安裝的 Python 之前，需要調整執行檔搜尋路徑。
+請在 \verb+~/.bashrc+ 的檔尾加上一行：
+
+\begin{minted}{bash}
+export PATH=$HOME/anaconda/bin:$PATH
+\end{minted}
+%stopzone
+
+檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了：
+
+\begin{minted}{bash}
+$ which python3
+/home/ubuntu/anaconda/bin/python3
+$ python3
+Python 3.6.0 |Anaconda 4.3.0 (64-bit)| (default, Dec 23 2016, 12:22:00) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+\end{minted}
+%stopzone
+
+還記得 Python 有第二與第三版的分別嗎？
+為了避免執行到錯誤的版本，
+本書都使用「\verb+python3+」來明確指明使用第三版的 Python。
+
+\section{VirtualBox 虛擬機器}
+%
+\label{c:runtime:vbox}
+
+\section{使用既有套件}
+
+Anaconda 與 PIP。
+
+\begin{example}
+使用命令列輸出 Hello World
+\end{example}
+
+\section{命令列互動模式}
+
+\section{習題}
+
+\chapter{撰寫程式}
+%
+\label{c:write}
+
 當我們使用動態語言撰寫程式的時候，
 首先會注意到的就是它不必宣告 (declare)、直接使用變數 (variable) 的特性。
 在電腦的世界裡，變數是用來識別資料的方式。
@@ -132,118 +376,13 @@ Python 是動態型別程式語言
 在動態語言中，變數的型態會在程式執行的時候自動被決定。
 在那之前 (例如撰寫程式的當下)，變數的型態並未確定，也就不需要宣告了。
 
-每一種程式語言都需要編譯器 (compiler)，
-把人類能讀懂的原始碼 (source code)
-編譯 (compile) 成電腦能執行的機器碼 (machine code)。
-但動態語言一般採取另一種稱作直譯器 (interpreter) 的實作方法。
-直譯器在讀取原始碼的同時，直接把原始碼轉換成機器碼，讓電腦執行。
-編譯與直譯這兩種模式最大的差別，是編譯器能一次掃瞄整份原始碼，
-全面性地最佳化 (optimize) 之後再生成機器碼。
-直譯器可見的原始碼有限，只能作局部的最佳化，因此執行效率很差。
-
-因為編譯器協助動態語言的部分有限，傳統上它不是學校課程所選擇的程式語言。
-因此，Python 過去不像 C、C++、Java 等語言那麼出名。
-近年來，由於編程的應用與普及，Python 開始在學校為人所知。
-
-本書透過演繹和範例展示 Python 的功能，
-使讀著無論採取課堂講授或自主學習的方式，
-都能確實地習得基本 Python 編程的能力。
-
-目前 Python 發展的重心是 Python 3。Python 3 發行於 2008 年。
-為了擺脫過去的設計缺陷，Python 3 具有不相容於 Python 2 的特性。
-常用的 Python 程式庫都已經移植到了 Python 3，
-是故一般的使用者可以放心使用 Python 3 的好處。
-本書也針對 Python 3 撰寫。
-
-%
-% 章節編排
-%
-
-讀者不需要程式語言的背景，也能使用本書學會 Python。
-從一開始的第\ref{c:runtime}、\ref{c:editor}章，帶領讀者建立執行與開發環境。
-第\ref{c:arithmic}、\ref{c:container}、\ref{c:control}、\ref{c:structure}、%
-\ref{c:exception}、\ref{c:iterator}、\ref{c:inout}章%
-實際說明如何使用 Python 執行計算。
-第\ref{c:deployment}、\ref{c:debug}、\ref{c:version}章介紹必備的軟體工程技能。
-最後在第\ref{c:regexp}、\ref{c:meta}、\ref{c:concurrency}、%
-\ref{c:extension}、\ref{c:beyond}章，介紹進階的 Python 功能。
-
-%
-% 學習目的
-%
-
-電腦 (computer) 豐富人類的生活，
-使我們無法拒絕在任何一個可能使用電腦協助我們的場合，利用電腦幫助我們。
-
-計算思維 (computational thinking)。
-
-本書是為了沒有學習過任何程式語言，
-尤其是非資訊科系的大學部同學或中學生所提供的 Python 入門教材。
-
-Python 是一個簡潔自然的語言，長期得到程式員的喜愛。
-近十年來，Python 都是
-TIOBE 社群指標\footnote{\url{http://www.tiobe.com/tiobe-index/}}中的前十名，
-並兩度入選年度程式語言 (``Programming Language of the Year'')。
-Institute of Electrical and Electronics Engineers (IEEE) 發現
-Python 受程式員歡迎的程度僅次於 C 和 Java，
-是最受歡迎的動態語言 (dynamic language) \cite{cass_interactive:_2016}。
-
-程式語言為了驅使電腦而存在。
-但實際在開發軟體時，閱讀程式碼的時間遠多於寫出程式碼的時間。
-考慮到這一點，Python 被設計成容易閱讀的程式語言。
-用 C 或是 C++ 要花一個小時寫的程式，使用 Python，常常只需要五分鐘。
-
-Python 的可讀性使 Python 程式容易被維護。
-程式寫出來以後仍然需要時常維護修改。
-維護時不會增加新功能，但要閱讀程式，並修改那些一開始寫得不夠完美的部分。
-沒有人能一次就把程式寫到盡善盡美。如同作家無時無刻都在修改文稿一樣。
-如果程式寫得不容易讀懂，時間一久，連原本的開發者也會難以修改。
-
-因為 Python 易學、易維護，許多複雜的計算系統都選擇使用 Python，
-為進階使用者提供應用程式介面 (API)。
-這些計算系統，為了執行效率，往往選擇使用 C++ 開發。
-C++ 的執行效率雖然極好，但是非常複雜難學，很難用來提供高階的 API。
-所以許多這些系統會提供 Python 介面，讓使用者寫程式操作。
-因為這樣的應用很常見，也有許多程式庫專門協助 C++ 程式建立 Python 介面。
-
-\mainmatter
-
-\part{認識環境}
-%
-\label{p:environment}
-
-\chapter{執行環境}
-%
-\label{c:runtime}
-
-本書的範例程式是在 Ubuntu Linux 16.04 LTS 或 Mac OSX 10.12 下開發測試。
-讀者最好在相同的環境下執行。
-
-\section{Ubuntu}
-
-\section{VirtualBox}
-
-\section{Anaconda}
-
-\begin{example}
-使用命令列輸出 Hello World
-\end{example}
-
-\section{命令列環境}
-
-\chapter{文字編輯器}
-%
-\label{c:editor}
-
 \section{VIM}
 
 \section{Jupyter Notebook}
 
-\part{核心功能}
-%
-\label{p:core}
+\section{單步追蹤}
 
-\chapter{數值和字串、表達式和陳述式}
+\chapter{表示式與陳述式}
 %
 \label{c:arithmic}
 
@@ -285,69 +424,85 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 計算字元出現的次數
 \end{example}
 
-\chapter{容器、資料結構、演算法}
+\chapter{流程控制}
 %
-\label{c:container}
-
-\section{序列}
-
-\section{數組}
-
-\section{列表}
-
-\section{字典}
-
-\section{集合}
-
-\chapter{迴圈與條件判斷}
-%
-\label{c:control}
+\label{c:flow}
 
 縮排。
 
-\chapter{函式、類別、物件}
+\chapter{迴圈}
 %
-\label{c:structure}
+\label{c:loop}
+
+\chapter{函式}
+%
+\label{c:function}
 
 \section{遞迴}
+
+\chapter{列表}
+%
+\label{c:list}
+
+\chapter{數組}
+%
+\label{c:tuple}
+
+\chapter{字典}
+%
+\label{c:dict}
+
+\chapter{集合}
+%
+\label{c:set}
+
+\chapter{類別}
+%
+\label{c:class}
+
+\section{方法}
 
 \chapter{例外處理}
 %
 \label{c:exception}
 
-\chapter{迭代器與產生器}
+\section{迭代器}
+
+\section{產生器}
+
+\chapter{檔案輸出入}
 %
-\label{c:iterator}
+\label{c:file}
 
-\chapter{檔案與輸出入}
+介紹檔案物件。
+
+例題：模擬檔案物件。
+
+\chapter{存取網頁資料}
 %
-\label{c:inout}
+\label{c:web}
 
-\part{軟體工程}
-%
-\label{p:software}
-
-\chapter{佈署、模組、套件}
-%
-\label{c:deployment}
-
-匯入。
-
-相對匯入。
-
-避免全域變數。
-
-\chapter{測試與除錯}
-%
-\label{c:debug}
+\section{JSON 資料格式}
 
 \chapter{版本控制}
 %
 \label{c:version}
 
-\part{進階功能}
+\chapter{模組與套件}
 %
-\label{p:advance}
+\label{c:module}
+
+匯入與相對匯入。
+
+\chapter{單元測試}
+%
+\label{c:unittest}
+
+\chapter{陣列處理}
+%
+\label{c:array}
+
+求解線性系統。
 
 \chapter{常規表示式}
 %
@@ -357,6 +512,12 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 %
 \label{c:meta}
 
+\chapter{命令列介面}
+%
+\label{c:cmdline}
+
+\section{測試}
+
 \chapter{並發計算}
 %
 \label{c:concurrency}
@@ -365,21 +526,9 @@ Python 使用萬國碼 (Unicode) 字串 (string)。
 %
 \label{c:extension}
 
-\chapter{綜合應用}
+\chapter{系統嵌入}
 %
-\label{c:beyond}
-
-\begin{itemize}
-
-\item 命令列介面設計。
-
-\item 文字資料處理。載入網路資料；JSON。
-
-\item NumPy 多維連續陣列。
-
-\item 線性系統。
-
-\end{itemize}
+\label{c:embed}
 
 \backmatter
 

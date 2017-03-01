@@ -13,8 +13,8 @@ else
 endif
 
 # Environmental setting.
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
+UNAME_CACHE := $(shell uname -s)
+ifeq ($(UNAME_CACHE),Darwin)
 	GVIM=mvim
 	PDFVIEW=open -a skim
 endif # FIXME: other platform?
@@ -34,7 +34,8 @@ ALL_TEX = $(wildcard $(SCHEMATIC_DIR)/*.tex)
 ALL_EPS = $(patsubst $(SCHEMATIC_DIR)/%.tex,$(EPS_DIR)/%.eps,$(ALL_TEX))
 ALL_SRC = $(MAIN_FN).tex $(ALL_TEX)
 
-default: $(MAIN_FN).pdf
+.PHONY: default
+default: pdf
 
 $(EPS_DIR)/%.eps: $(SCHEMATIC_DIR)/%.tex Makefile pstake.py
 	mkdir -p $(EPS_DIR)
@@ -43,12 +44,15 @@ $(EPS_DIR)/%.eps: $(SCHEMATIC_DIR)/%.tex Makefile pstake.py
 $(MAIN_FN).pdf: $(MAIN_FN).tex bibliography.bib $(ALL_EPS) Makefile
 	@echo "Having EPS files: $(ALL_EPS)"
 	num=1 ; while [[ $$num -le $(NUM) ]] ; do \
-		xelatex $< 2>&1 | tee $@.$$num.cmd.log $(CMDLOG_REDIRECT) ; \
+		xelatex -shell-escape $< 2>&1 | tee $@.$$num.cmd.log $(CMDLOG_REDIRECT) ; \
 		bibtex $(basename $<) 2>&1 | tee $@.$$num.bibtex.log $(CMDLOG_REDIRECT) ; \
 		(( num = num + 1 )) ; \
 	done
 
 .PRECIOUS: %.pdf
+
+.PHONY: pdf
+pdf: $(MAIN_FN).pdf
 
 .PHONY: ho
 ho: handover
@@ -59,18 +63,21 @@ handover: $(MAIN_FN).pdf
 	mkdir -p $(HANDOVER_DIR)
 	cp -f $< $(HANDOVER_FN)
 
-.PHONY: clean
-clean:
-	rm -f $(EPS_DIR)/* *.cmd.log \
-		$(foreach ext,$(LATEX_DERIVED_EXT),$(MAIN_FN).$(ext))
-
 .PHONY: pdfview
 pdfview:
 	$(PDFVIEW) $(MAIN_FN).pdf
+
+.PHONY: pv
+pv: pdfview
 
 .PHONY: fun
 fun:
 	$(GVIM) Makefile $(ALL_SRC) -p -c "set lines=999"
 	$(PDFVIEW) $(MAIN_FN).pdf
+
+.PHONY: clean
+clean:
+	rm -f $(EPS_DIR)/* *.cmd.log \
+		$(foreach ext,$(LATEX_DERIVED_EXT),$(MAIN_FN).$(ext))
 
 # vim: set sw=8 ts=8 noet:
