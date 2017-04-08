@@ -80,4 +80,8 @@ clean:
 	rm -f $(EPS_DIR)/* *.cmd.log \
 		$(foreach ext,$(LATEX_DERIVED_EXT),$(MAIN_FN).$(ext))
 
+.PHONY: list
+list:
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
+
 # vim: set sw=8 ts=8 noet:
