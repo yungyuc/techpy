@@ -1,0 +1,92 @@
+export TPROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# namemunge
+if [ -z "$(type -t namemunge)" ] ; then
+
+# path munge.
+namemunge () {
+  if ! echo ${!1} | egrep -q "(^|:)$2($|:)" ; then
+    if [ -z "${!1}" ] ; then
+      eval "$1=$2"
+    else
+      if [ "$3" == "after" ] ; then
+        eval "$1=\$$1:$2"
+      else
+        eval "$1=$2:\$$1"
+      fi
+    fi
+  fi
+  eval "export $1"
+}
+export -f namemunge
+
+fi # end namemunge
+
+# nameremove
+if [ -z "$(type -t nameremove)" ] ; then
+
+# see http://stackoverflow.com/a/370192/1805420
+nameremove () {
+  eval "export $1=$(echo -n ${!1} | awk -v RS=: -v ORS=: -v var="$2" '$0 != var' | sed 's/:*$//')"
+}
+export -f nameremove
+
+fi # end nameremove
+
+# source_if
+if [ -z "$(type -t source_if)" ] ; then
+
+source_if () {
+  test -f "$1" && source "$1"
+}
+export -f source_if
+
+fi # end source_if
+
+download () {
+  loc=$1
+  url=$2
+  md5hash=$3
+  if [ $(uname) == Darwin ] ; then
+    md5="md5 -q"
+  elif [ $(uname) == Linux ] ; then
+    md5=md5sum
+  fi
+  if [ ! -e $loc ] || [ $md5hash != `$md5 $loc | cut -d ' ' -f 1` ] ; then
+    mkdir -p $(dirname $loc)
+    rm -f $loc
+    echo "Download from $url"
+    curl -SL -o $loc $url
+  fi
+  if [ $md5hash != `$md5 $loc | cut -d ' ' -f 1` ] ; then
+    echo "$(basename $loc) md5 hash $md5hash but got `$md5 $loc`"
+  else
+    echo "$(basename $loc) md5 hash $md5hash confirmed"
+  fi
+}
+
+install_anaconda() {
+  local os
+  if [ $(uname) == Darwin ] ; then
+    os="MacOSX"
+  elif [ $(uname) == Linux ] ; then
+    os="Linux"
+  fi
+  download ~/tmp/anaconda.sh \
+    https://repo.continuum.io/archive/Anaconda3-4.3.1-$os-x86_64.sh \
+    fdf4ad01fadb58415bb4c6119153e04a
+  bash ~/tmp/anaconda.sh -b -p $TPROOT/usr/anaconda
+}
+
+disable_work() {
+  nameremove PATH $TPROOT/usr/anaconda/bin
+  nameremove PYTHONPATH $TPROOT/usr/anaconda/bin
+  unset download
+  unset install_anaconda
+  unset TPROOT
+}
+
+namemunge PATH $TPROOT/usr/anaconda/bin
+namemunge PYTHONPATH $TPROOT/usr/anaconda/bin
+
+# vim: set ff=unix fenc=utf8 nobomb ft=sh:

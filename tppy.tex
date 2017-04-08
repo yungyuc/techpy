@@ -103,6 +103,7 @@
 }
 {
 \end{minipage}
+\vskip 1em
 \end{center}
 }
 
@@ -300,12 +301,12 @@ root 是 Linux 具有最高權限的系統管理帳號。
 即可下載 Anaconda 並安裝。
 也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
 輸入以下的指令安裝 (此處假設你使用的是一般 x86\_64 架構的 PC)：
-
+%
 \begin{minted}{bash}
 $ mkdir -p ~/tmp
 $ curl -SL -o ~/tmp/anaconda.sh \
 https://repo.continuum.io/archive/\
-Anaconda3-4.3.0-Linux-x86_64.sh
+Anaconda3-4.3.1-Linux-x86_64.sh
 $ bash ~/tmp/anaconda.sh -b -p $HOME/anaconda
 \end{minted}
 %stopzone
@@ -316,8 +317,8 @@ $ bash ~/tmp/anaconda.sh -b -p $HOME/anaconda
 %
 %\noindent
 \begin{notice}
-\noindent 值此寫作之時，Anaconda 最新的版本是 4.3。但它版本推進的速度很快。
-若最新的版本已經不是 4.3，請安裝更新版。
+\noindent 值此寫作之時，Anaconda 最新的版本是 4.3.1。但它版本推進的速度很快。
+若最新的版本已經不是 4.3.1，請安裝更新版。
 \end{notice}
 %\end{minipage}
 %\end{center}
@@ -332,7 +333,7 @@ export PATH=$HOME/anaconda/bin:$PATH
 %stopzone
 
 檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了：
-
+%
 \begin{minted}{bash}
 $ which python3
 /home/ubuntu/anaconda/bin/python3
@@ -384,14 +385,120 @@ VirtualBox 這套軟體會在真正的電腦裡模擬出一台電腦。
 VirtualBox 本身的下載與安裝，請見 \url{https://www.virtualbox.org}。
 
 \section{使用既有套件}
+%
+\label{c:runtime:package}
 
-Anaconda 與 PIP。
+在撰寫程式的時候，我們除了需要使用程式語言來表達讓電腦執行的工作之外，
+還需要用到其它人寫好的程式庫。
+當我們開發從網路上下載檔案的程式時，我們希望能專注在檔案下載和處理的邏輯上，
+而不是網路傳輸的細節。
+此時我們會使用別人已經寫好的網路傳輸程式庫，
+而不會浪費時間自己開發網路傳輸程式。
+
+一個正常安裝完成的 Python，除了程式語言本身之外，
+也包含標準程式庫 (standard library)。
+對一個好的程式語言平台來說，程式語言與支援語言的程式庫是一樣重要的。
+Python 標準程式庫內容的豐富程度，
+就好像是個包裝內含電池 (batteries-included)，
+買來就可以開始用的工具一樣。
+你可以在 \url{https://docs.python.org/3/library/index.html}
+查閱所有的 Python 標準程式庫。
+它的範疇包含進階的資料型態、抽象化的執行流程、資料輸入輸出、網路通訊、
+作業系統橋接、語言內部工具。
+
+雖然 Python 已有豐富的標準程式庫，但也無法對應所有的應用領域。
+標準程式庫的責任是提供基礎的編程支援。
+所謂的基礎，是指所有的應用領域都能使用，但不為某種用途特化。
+Python 提供系統把軟體或程式庫包裝成一個第三方套件 (third-party package)。
+多數的 Python 套件都會登記在 PyPI (Python Package Index) 網站
+\url{https://pypi.python.org/pypi/} 上，以便下載。
+目前 PyPI 上登記在列的套件超過十萬個。
+
+除了提供程式庫之外，有些套件本身就是功能完整的軟體。
+譬如 \verb+glances+ 這個跨平台的系統監視工具
+(\url{https://nicolargo.github.io/glances/})。
+只要使用 Python 的標準 \verb+pip+ 指令即可安裝：
+%
+\begin{minted}{bash}
+$ pip install glances
+\end{minted}
+%stopzone
+
+\begin{notice}
+\noindent 
+有時候我們會選擇使用 Ananconda 來安裝套件，而不用 PIP。
+在 Windows 上特別容易出現這樣的情況。
+原因是有一些 Python 套件包含了以 C 或 C++ 撰寫的延伸模組 (extension module)，
+而安裝這些延伸模組時，需要使用其它的編譯程式，把原始碼編譯成可執行碼。
+有時候編譯動作相當複雜，PIP 和 PyPI 無法處理。
+Anaconda 對編譯延伸模組提供更全面的支援，遇到複雜套件的時候，
+比較容易提供已編譯的安裝檔案。
+
+例如我們之後會遇到的 NumPy，就應該用 Ananconda，而不要用 PIP 安裝：
+%
+\begin{minted}{bash}
+$ conda install numpy
+\end{minted}
+%stopzone
+\end{notice}
 
 \begin{example}
 使用命令列輸出 Hello World
+
+Python 有個方便的「一行文」(one-liner) 模式，
+用來直接在命令列裡執行 Python 程式。
+一行文妙用無窮，但最常見的應用是計算機。
+因為程式員總與命令列為伍，心算不好的人，直接在終端機裡面打幾個字，
+就可以算完一天的菜錢。
+比拿手機出來按計算機還簡單，好不快意。
+在執行 \verb+python3+ 的時候，使用 \verb+-c+ 參數，
+後接的字串就會被當作 Python 程式執行：
+%
+\begin{minted}{bash}
+$ python3 -c "print('hello, world')"
+hello, world
+\end{minted}
+%stopzone
+
+在 Linux 下，設定好終端機的語系之後，顯示中文也很輕鬆：
+%
+\begin{minted}{bash}
+$ python3 -c "print('但願人長久')"
+但願人長久
+\end{minted}
+%stopzone
+%
+(設定語系比寫這一行文難一點，但不在本書的討論內容之列。)
 \end{example}
 
-\section{命令列互動模式}
+一行文的另一個用法，是執行 Python 「程式庫」。
+在使用程式庫的時候，我們要把 Python 程式寫進檔案 (\verb+.py+)
+才能調用程式庫提供的功能。
+但有些程式庫把常用的功能開放出來，讓使用者直接使用。
+譬如 Python \verb+http.server+ 這個模組，直接當作程式執行的話，
+會開啟一個網頁伺服器，表列目錄下的檔案：
+%
+\begin{minted}{bash}
+$ python3 usr/anaconda/lib/python3.6/http/server.py
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+\end{minted}
+%stopzone
+%
+打開瀏覽器，就會看到當前目錄下的檔案。
+(欲結束伺服器，在終端機內按下 Ctrl-C 組合鍵。)
+
+\verb+http.server+ 這個模組埋在相當深的地方。
+即使功能本身很便利，記憶那麼長的檔案路徑，卻不是那麼便利了。
+Python 提供 \verb+-m+ 參數。
+我們只要知道模組的名字，Python 會自動幫忙把它當成程式 (而不是程式庫) 執行：
+%
+\begin{minted}{bash}
+$ python3 -m http.server
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+\end{minted}
+%stopzone
+
+\section{互動模式}
 
 \section{習題}
 
