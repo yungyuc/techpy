@@ -302,7 +302,7 @@ root 是 Linux 具有最高權限的系統管理帳號。
 也可以打開 Ubuntu 的終端機 (terminal；提供命令行介面)，
 輸入以下的指令安裝 (此處假設你使用的是一般 x86\_64 架構的 PC)：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ mkdir -p ~/tmp
 $ curl -SL -o ~/tmp/anaconda.sh \
 https://repo.continuum.io/archive/\
@@ -334,7 +334,7 @@ export PATH=$HOME/anaconda/bin:$PATH
 
 檔案改好了以後，關閉再重新開啟終端機，就可以使用安裝好的 Python 了：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ which python3
 /home/ubuntu/anaconda/bin/python3
 $ python3
@@ -419,7 +419,7 @@ Python 提供系統把軟體或程式庫包裝成一個第三方套件 (third-pa
 (\url{https://nicolargo.github.io/glances/})。
 只要使用 Python 的標準 \verb+pip+ 指令即可安裝：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ pip install glances
 \end{minted}
 %stopzone
@@ -436,7 +436,7 @@ Anaconda 對編譯延伸模組提供更全面的支援，遇到複雜套件的�
 
 例如我們之後會遇到的 NumPy，就應該用 Ananconda，而不要用 PIP 安裝：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ conda install numpy
 \end{minted}
 %stopzone
@@ -454,7 +454,7 @@ Python 有個方便的「一行文」(one-liner) 模式，
 在執行 \verb+python3+ 的時候，使用 \verb+-c+ 參數，
 後接的字串就會被當作 Python 程式執行：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ python3 -c "print('hello, world')"
 hello, world
 \end{minted}
@@ -462,7 +462,7 @@ hello, world
 
 在 Linux 下，設定好終端機的語系之後，顯示中文也很輕鬆：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ python3 -c "print('但願人長久')"
 但願人長久
 \end{minted}
@@ -478,7 +478,7 @@ $ python3 -c "print('但願人長久')"
 譬如 Python \verb+http.server+ 這個模組，直接當作程式執行的話，
 會開啟一個網頁伺服器，表列目錄下的檔案：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ python3 usr/anaconda/lib/python3.6/http/server.py
 Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 \end{minted}
@@ -492,13 +492,73 @@ Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 Python 提供 \verb+-m+ 參數。
 我們只要知道模組的名字，Python 會自動幫忙把它當成程式 (而不是程式庫) 執行：
 %
-\begin{minted}{bash}
+\begin{minted}{console}
 $ python3 -m http.server
 Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 \end{minted}
 %stopzone
 
 \section{互動模式}
+%
+\label{c:runtime:interactive}
+
+在介紹撰寫 Python 程式檔案之前，
+我們還要介紹 Python 的互動模式 (interactive mode)。
+在終端機輸入 \verb+python3+，不帶任何參數，就會進入互動模式：
+%
+\begin{minted}{console}
+$ python3
+Python 3.6.0 |Anaconda 4.3.1 (x86_64)| (default, Dec 23 2016, 13:19:00)
+[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+\end{minted}
+%stopzone
+
+Python 互動模式可以用來作非常多事情。
+譬如說，用 Gauss-Legendre algorithm 來計算圓周率 ($\pi$)：
+%
+\begin{minted}{pycon}
+>>> import math
+>>> a = 1.0
+>>> b = 1.0/math.sqrt(2)
+>>> t = 1.0/4.0
+>>> p = 1.0
+>>> niter = 2
+>>> # This is a loop.
+>>> for i in range(niter):
+>>>   at = (a+b)/2
+>>>   bt = math.sqrt(a*b)
+>>>   tt = t - p*(a-at)**2
+>>>   pt = 2*p
+>>>   a = at; b = bt; t = tt; p = pt
+>>> my_pi = (a+b)**2/(4*t)
+>>> print("My PI:", my_pi)
+My PI: 3.141592646213543
+>>> print("Py PI:", math.pi)
+Py PI: 3.141592653589793
+\end{minted}
+%stopzone
+%
+當然，互動模式不該只當作厲害的計算器來用。
+對程式員來說，它最大的好處，還是方便測驗程式的寫法。
+在互動模式下，Python 會一行一行地執行程式碼，隨時讓我們知道程式執行的結果：
+%
+\begin{minted}{pycon}
+>>> line = "The first line."
+>>> print(line)
+The first line.
+>>> line += "\nAnd the second line."
+>>> print(line)
+The first line.
+And the second line.
+\end{minted}
+%stopzone
+
+直譯式的語言都具有這個特色。
+但 Python 除了標準的互動模式之外，
+更有 Jupyter notebook (前身為 iPython notebook) 結合 Python 和網頁化的圖形顯示。
+我們會在下一章介紹 Jupyter 這個強大的工具。
 
 \section{習題}
 
