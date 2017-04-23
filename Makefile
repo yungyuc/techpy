@@ -27,7 +27,7 @@ LATEX_DERIVED_EXT := toc glsdefs aux log out dvi ps pdf
 NOWDATE := $(shell date +"%Y%m%d")
 NOWID := $(shell git rev-parse --short HEAD)
 HANDOVER_DIR := handover
-HANDOVER_FN = $(HANDOVER_DIR)/$(basename $<).$(NOWID).$(NOWDATE).pdf
+HANDOVER_FN = $(HANDOVER_DIR)/$(basename $<).$(NOWDATE).$(NOWID).pdf
 
 # Targets.
 ALL_TEX = $(wildcard $(SCHEMATIC_DIR)/*.tex)
