@@ -37,11 +37,14 @@ ALL_SRC = $(MAIN_FN).tex $(ALL_TEX)
 .PHONY: default
 default: pdf
 
+githash:
+	git rev-parse HEAD > githash
+
 $(EPS_DIR)/%.eps: $(SCHEMATIC_DIR)/%.tex Makefile pstake.py
 	mkdir -p $(EPS_DIR)
 	$(PSTAKE) $< $@
 
-$(MAIN_FN).pdf: $(MAIN_FN).tex bibliography.bib $(ALL_EPS) Makefile
+$(MAIN_FN).pdf: $(MAIN_FN).tex bibliography.bib $(ALL_EPS) githash Makefile
 	@echo "Having EPS files: $(ALL_EPS)"
 	num=1 ; while [[ $$num -le $(NUM) ]] ; do \
 		xelatex -shell-escape $< 2>&1 | tee $@.$$num.cmd.log $(CMDLOG_REDIRECT) ; \

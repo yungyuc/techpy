@@ -1,6 +1,7 @@
 _minted-*/
 eps/
 handover
+githash
 *.toc
 *.glsdefs
 *.aux
